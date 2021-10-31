@@ -9,7 +9,7 @@ plugins {
     id 'ear'
 }
 
-def wildfly_home="/home/nghiselli/Projects/DistributedSystemsM/JBoss/wildfly-17.0.1.Final"
+def wildfly_home="C:/Users/ghido/Desktop/wildfly-17.0.1.Final"
 
 repositories {
     maven { url "https://repository.jboss.org/nexus/content/groups/public/" }
@@ -60,6 +60,8 @@ dependencies {
     deploy files(jar)
 
     // The following dependencies will become ear libs and will be placed in a dir configured via the libDirName property
+    //da wtp unsupported mixed path
+    //earlib e deploy non possono stare insieme
     earlib group: 'log4j', name: 'log4j', version: '1.2.15', ext: 'jar'
 
 
@@ -117,6 +119,7 @@ task deployEar( ){
     delete("$wildfly_home/standalone/deployments/distributed-systems-demo.ear")
     println("old depployments deleted.....")
 
+	//copy è un metodo di project
     copy(){
         from "$buildDir/libs/distributed-systems-demo.ear"
         into "$wildfly_home/standalone/deployments/"

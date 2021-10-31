@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
 
 
 @Stateless
-@Local(ProductDAO.class)
+@Local
 //@Remote(ProductDAO.class)  //-> TODO: serve nella versione clustering???
 public class EJB3ProductDAO implements ProductDAO {
 
