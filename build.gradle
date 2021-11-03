@@ -82,7 +82,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
-    // to use the correct dialect
+    // to use the correct dialect. Driver jar
     runtime 'mysql:mysql-connector-java:8.0.17'
 
     // LOGGING
@@ -107,9 +107,12 @@ dependencies {
 }
 
 task deployEar( ){
-
+//il codice fuori doLast/doFirst è eseguito a configuration phase (quella che genera il DAG dei task)
+//il codice in doLast/doFirst è eseguito a execution phase dei task
+   dependsOn('ear')
+doLast {
     println("running dependencies.....")
-    dependsOn('ear')
+ 
 
     println("dependencies resolved.....")
 
@@ -126,6 +129,7 @@ task deployEar( ){
     }
 
     println("Application deployed!")
+    }
 }
 
 task testintellijcommit(){
@@ -187,10 +191,11 @@ war {
 
 //   dependsOn('prepareWar')
 
-    from 'src/webapp' // adds a file-set to the root of the archive
+   // from 'src/webapp' // adds a file-set to the root of the archive
     //from 'tmp/war'
-    include "*.cfg.xml"
-    include "*.jsp"
+    //include "*.cfg.xml"
+    
+  //  include "*.jsp"
 }
 
 
@@ -256,7 +261,7 @@ ear {
 //     All dependencies in the deploy configuration are placed in the root of the EAR archive, and are not transitive.
 //     All dependencies in the earlib configuration are placed in the 'lib' directory in the EAR archive and are transitive.
 //
-
+    
     includeEmptyDirs=false
 //    from "$buildDir/libs" -> !!!!! WARNING CAUSES A LOOOP !!!!!
 

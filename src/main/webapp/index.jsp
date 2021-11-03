@@ -79,8 +79,9 @@
 			product.setName( request.getParameter("name") );
 			product.setProductNumber(Integer.parseInt(request.getParameter("number")));
 
-			Producer producer = producerDAO.findProducerByName(request.getParameter("producer"));
-			product.setProducer(producer);
+			Integer idp = Integer.parseInt(request.getParameter("producer"));
+			Producer producer = producerDAO.findProducerById(idp);
+			//product.setProducer(producer);
 			int id = productDAO.insertProduct(product);
 			out.println("<!-- inserted product '" + product.getName() + "' with id = '" + id + "' -->");
 		}
