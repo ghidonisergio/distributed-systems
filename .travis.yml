@@ -2,4 +2,7 @@ language: ruby
 rvm:
  - 2.2
  - jruby
+<<<<<<< HEAD
 
+=======
+>>>>>>> eec077d671133d07f5f41728b8c45d5b937cf69d
