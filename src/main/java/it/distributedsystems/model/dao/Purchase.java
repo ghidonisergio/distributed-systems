@@ -1,6 +1,9 @@
 package it.distributedsystems.model.dao;
 
 import javax.persistence.*;
+
+
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -8,13 +11,13 @@ import java.util.Set;
 public class Purchase implements Serializable {
 
     private static final long serialVersionUID = 4612874195612951296L;
-
+   
     protected int id;
     protected int purchaseNumber;
     protected Customer customer;
     protected Set<Product> products;
 
-    public Purchase() {}
+   
 
     public Purchase(int purchaseNumber) { this.purchaseNumber = purchaseNumber; }
 

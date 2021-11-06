@@ -33,7 +33,7 @@ public class InitServlet extends HttpServlet {
 	
 
 	@Resource
-	private UserTransaction transaction;
+	private UserTransaction utx;
 
 	
 
@@ -42,15 +42,23 @@ public class InitServlet extends HttpServlet {
 		super.init(config);
 		System.out.println("EXECUTING CREATE TABLE");
 		
+		/*
+		 * 
+		 * WATCH OUT!!! l'istanza em che passi NON è la stessa che recuperi dopo
+		 * quasi sicuramente generando un persistence context diverso. Ricorda jsp:bean di tempo fa...
+		COME AL SOLITO usare servletctx per passare roba container managed è una pessima idea
+		this.getServletContext().setAttribute("em", em);
 		
+		*/
+		this.getServletContext().setAttribute("utx", utx);
 		try {
-		transaction.begin();
+		utx.begin();
 		em.createNativeQuery("create table IF NOT EXISTS atable (mycol int);").executeUpdate();
-		 transaction.commit();
+		 utx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			 try {
-				transaction.rollback();
+				utx.rollback();
 			} catch (IllegalStateException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

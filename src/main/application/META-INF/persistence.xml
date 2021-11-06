@@ -28,23 +28,27 @@
         <class>it.distributedsystems.model.dao.Customer</class>
         <!--  <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>-->
         <!--  <validation-mode>CALLBACK</validation-mode>-->
-       <!--   <properties>
-           DB information
-            <property name="connection.url" value="jdbc:mysql://localhost:3306/test"/>
-           <property name="connection.username" value="root"/>
-            <property name="connection.password" value="password"/>
-
-               <property name="connection.driver_class" value="com.mysql.jdbc.Driver"/>
-             <property name="connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-              <property name="dialect" value="org.hibernate.dialect.MySQL8DialectDialect"/>
-             <property name="dialect" value="org.hibernate.dialect.MySQL57Dialect"/>
+         <properties>
+          <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+             
     <property name="show_sql" value="true"/>
             <property name="format_sql" value="true"/>
-             <property name="hibernate.hbm2ddl.auto" value="create"/>
+            
+         <!--    DB information
+            <property name="connection.url" value="jdbc:mysql://localhost:3306/test"/>
+           <property name="connection.username" value="root"/>
+            <property name="connection.password" value="password"/> -->
 
-           JDBC connection pool (use the built-in)
+            <!--     <property name="connection.driver_class" value="com.mysql.jdbc.Driver"/>
+             <property name="connection.driver_class" value="com.mysql.cj.jdbc.Driver"/> 
+              <property name="dialect" value="org.hibernate.dialect.MySQL8DialectDialect"/>
+              
+                <property name="dialect" value="org.hibernate.dialect.MySQL57Dialect"/>-->
+        
+
+        <!--    JDBC connection pool (use the built-in)
           <property name="connection.pool_size" value="10"/>
-            <property name="current_session_context_class" value="thread"/>
-        </properties>-->
+            <property name="current_session_context_class" value="thread"/>-->
+        </properties>
     </persistence-unit>
 </persistence>

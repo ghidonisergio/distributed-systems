@@ -15,6 +15,13 @@ public class Product implements Serializable {
     protected String name;
     protected int price;
     protected Purchase purchase;
+   
+    
+    /*
+     * a quanto pare mettere qui la @ManyToOne e lasciare le altre @ sulle get
+     * hibernate genera una column tinyblob 'producer' dove salva il bytecode del 
+     * producer associato al product
+     */
     protected Producer producer;
 
     public Product() {}
@@ -67,8 +74,8 @@ public class Product implements Serializable {
     }
 
     @ManyToOne(
-            cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
-            fetch = FetchType.LAZY
+            cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}
+           // fetch = FetchType.LAZY
     )
     public Producer getProducer() {
         return producer;

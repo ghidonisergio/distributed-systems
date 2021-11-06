@@ -7,6 +7,7 @@ import it.distributedsystems.model.dao.CustomerDAO;
 import javax.ejb.*;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class EJB3CustomerDAO implements CustomerDAO {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Customer findCustomerByName(String name) {
+    public Customer findCustomerByName(String name) throws EntityNotFoundException{
         if(name != null && !name.equals("")) {
             return (Customer) em.createQuery("FROM Customer c where c.name = :customerName").
                     setParameter("customerName", name).getSingleResult();

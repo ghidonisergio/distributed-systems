@@ -2,8 +2,8 @@ package it.distributedsystems.model.ejb;
  
 import javax.persistence.*;
   
-@Entity
-@Table
+//@Entity
+//@Table
 public class Employee {
     @Id
     @GeneratedValue

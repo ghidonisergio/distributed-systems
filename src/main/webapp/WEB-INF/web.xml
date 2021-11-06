@@ -5,49 +5,47 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4">
 
-    <display-name>Progetto Sistemi Distribuiti LS</display-name>
+    <display-name>04_TecWeb</display-name>
     <description>
-      A sample EJB3 realization
+      A JSP-based to project to use as a template for your own ones
     </description>
 
+    <!-- Define servlets that are included in the application -->
+
+    <servlet>
+        <servlet-name>StillAServlet</servlet-name>
+        <servlet-class>it.distributedsystems.web.StillAServlet</servlet-class>
+       
+        <init-param>
+        	<param-name>homeURL</param-name>
+        	<param-value>/pages/home.jsp</param-value>
+        </init-param>
+        
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StillAServlet</servlet-name>
+        <url-pattern>/stillaServlet</url-pattern>
+    </servlet-mapping>
+
+	<!-- Welcome pages -->
+	<!-- pleonastico: tomcat "tenta" in automatico le index.html e index.jsp -->
+	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
-	 <servlet>
-    <servlet-name>initServlet</servlet-name>
-    <servlet-class>it.distributedsystems.web.InitServlet</servlet-class>
-
-    <init-param>
-      <param-name>servletContextKey</param-name>
-      <param-value>servletC</param-value>
-    </init-param>
-
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>initServlet</servlet-name>
-    <url-pattern>/init</url-pattern>
-  </servlet-mapping>
-
-	<!-- Context parameters -->
-
-	<context-param>
-		<param-name>dao</param-name>
-		<param-value>it.distributedsystems.model.ejb.EJB3DaoFactory</param-value>
-	</context-param>
-
+		
 	<!-- Handle exceptions and errors -->
 	
 	<error-page>
 		<error-code>404</error-code>
-		<location>/errorpages/notfound.html</location>
+		<location>/errors/notfound.html</location>
 	</error-page>
 
+	<!-- Gestiremo questo direttamente nelle pagine JSP
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
-		<location>/errorpages/exception.html</location>
+		<location>/errors/exception.html</location>
 	</error-page>
+	 -->
 
 </web-app>

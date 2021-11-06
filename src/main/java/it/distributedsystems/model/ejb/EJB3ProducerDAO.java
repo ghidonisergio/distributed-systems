@@ -66,9 +66,11 @@ public class EJB3ProducerDAO implements ProducerDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Producer findProducerById(int id) {
-        return em.find(Producer.class, id);
+    	Producer producer = em.find(Producer.class, id);
+    
+    	return producer;
     }
 
     @Override
