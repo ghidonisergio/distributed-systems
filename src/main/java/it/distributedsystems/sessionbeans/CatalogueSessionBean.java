@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import it.distributedsystems.messaging.LogMessageClient;
 import it.distributedsystems.model.dao.Producer;
 import it.distributedsystems.model.dao.ProducerDAO;
 import it.distributedsystems.model.dao.Product;
@@ -34,6 +35,9 @@ public class CatalogueSessionBean implements Serializable, Catalogue {
 	 
 	 @EJB
 	 ProducerDAO producerDAO;
+	 
+	 @EJB
+	 LogMessageClient JMSLog;
 
 	//private List<Product> items = new ArrayList<Product>();
 
@@ -61,6 +65,9 @@ public class CatalogueSessionBean implements Serializable, Catalogue {
 		for(Product p : products) {
 			productDAO.removeProductById(p.getId());
 		}
+		
+		JMSLog.sendMessage("Successful empty in catalog");
+
 	}
 	
 
@@ -69,7 +76,8 @@ public class CatalogueSessionBean implements Serializable, Catalogue {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void remove(int productNumber) {
 		productDAO.removeProductByNumber(productNumber);
-	
+		JMSLog.sendMessage("Successful removal of  product (product number: "+productNumber+") in catalog");
+
 
 	}
 
@@ -90,7 +98,7 @@ public class CatalogueSessionBean implements Serializable, Catalogue {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void addProducer(String producerName) {
 		producerDAO.insertProducer(new Producer(producerName));
-		
+		JMSLog.sendMessage("Successful insert of new producer (producer name: "+producerName+") in catalog");
 	}
 
 	@Override
@@ -109,7 +117,7 @@ public class CatalogueSessionBean implements Serializable, Catalogue {
 		producer.getProducts().add(item);
 		 
 		productDAO.insertProduct(item);
-		
+		JMSLog.sendMessage("Successful insert of new product (prod number: "+prodNumber+") in catalog");
 	}
 
 	@Override

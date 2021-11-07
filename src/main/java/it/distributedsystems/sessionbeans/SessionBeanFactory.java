@@ -6,6 +6,8 @@ import javax.naming.InitialContext;
 
 import org.apache.log4j.Logger;
 
+import it.distributedsystems.messaging.LogMessageClient;
+
 
 public class SessionBeanFactory {
 	 private static Logger logger = Logger.getLogger("DAOFactory");
@@ -46,6 +48,17 @@ public class SessionBeanFactory {
 	            return result;
 	        } catch (Exception var3) {
 	            logger.error("Error looking up Cart", var3);
+	            return null;
+	        }
+	    }
+	    
+	    public static LogMessageClient getLogMessageClient() {
+	        try {
+	            InitialContext context = getInitialContext();
+	            LogMessageClient result = (LogMessageClient)context.lookup("java:app/distributed-systems-demo.war/LogMessageClientImpl!it.distributedsystems.notused.LogMessageClient");
+	            return result;
+	        } catch (Exception var3) {
+	            logger.error("Error looking up MessageClient", var3);
 	            return null;
 	        }
 	    }

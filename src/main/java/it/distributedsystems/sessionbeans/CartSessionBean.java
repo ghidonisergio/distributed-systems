@@ -15,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityNotFoundException;
 
+import it.distributedsystems.messaging.LogMessageClient;
 import it.distributedsystems.model.dao.Customer;
 import it.distributedsystems.model.dao.CustomerDAO;
 import it.distributedsystems.model.dao.Product;
@@ -35,6 +36,9 @@ public class CartSessionBean implements Serializable, Cart {
 	
 	@EJB 
 	CustomerDAO customerDAO;
+	
+	@EJB
+	 LogMessageClient JMSLog;
 	
 	//mappa produt number:prodotto
 	private Map<Integer,Product> items = new HashMap<Integer,Product>();
@@ -76,6 +80,7 @@ public class CartSessionBean implements Serializable, Cart {
 		Product prod = catalogue.getByProductNumber(prodNum);
 		prod.getProducer().getName();
 		items.put( prodNum, prod);
+		JMSLog.sendMessage("Successful put of product (product number: "+prodNum+ ")  in cart" );
 	}
 	
 	/* (non-Javadoc)
@@ -86,7 +91,7 @@ public class CartSessionBean implements Serializable, Cart {
 	public void empty() {
 		this.items = new HashMap<Integer,Product>();
 		this.purchase = null;
-		
+		JMSLog.sendMessage("Successful empty in cart" );
 	}
 
 	@Override
@@ -98,7 +103,7 @@ public class CartSessionBean implements Serializable, Cart {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeByProductNumber(int productNumber) {
 		items.remove(productNumber);
-		
+		JMSLog.sendMessage("Successful removal of product (prod number: " + productNumber +") in cart" );
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -197,6 +202,9 @@ public class CartSessionBean implements Serializable, Cart {
 		
 	
 		purchaseDAO.insertPurchase(purchase);
+		JMSLog.sendMessage("Successful confirm of  purchase (purchase number: "+
+				purchase.getPurchaseNumber()+") of customer (customer name: "+customerName+")");
+
 		return true;
 	}
 
@@ -218,6 +226,8 @@ public class CartSessionBean implements Serializable, Cart {
 	
 	public void removeItem(int prodNum) {
 		items.remove(prodNum);
+		JMSLog.sendMessage("Successful removal of  product (product number: "+prodNum+") in cart");
+
 	}
 	
 }

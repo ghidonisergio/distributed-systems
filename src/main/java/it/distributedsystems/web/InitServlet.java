@@ -44,6 +44,7 @@ public class InitServlet extends HttpServlet {
 		System.out.println("EXECUTING CREATE TABLE");
 		
 		SessionBeanFactory.getCatalogue().addProducer("n. d.");
+		
 		/*
 		 * 
 		 * WATCH OUT!!! l'istanza em che passi NON è la stessa che recuperi dopo
