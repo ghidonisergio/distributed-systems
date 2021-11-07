@@ -50,12 +50,13 @@
 										
 										catalogue.add(name,price,prodNumber,producerName);
 									}
+								}
 									else if ( request.getParameter("remove") != null && request.getParameter("remove").equals("ok") ) {
 										int productNumber = Integer.parseInt(request.getParameter("productNumber"));
 										catalogue.remove(productNumber);
 									}
 									
-								} else if (producerName != null && !producerName.isEmpty()) {
+								 else if (producerName != null && !producerName.isEmpty()) {
 									catalogue.addProducer(producerName);
 								}
 						%>
@@ -94,7 +95,7 @@
 			<%
 				}// end while
 			%>
-			<option value="n. d.">n. d.</option>
+			
 			</select>
 			</td></tr><tr>
 						<tr><td colspan="2">
@@ -135,8 +136,8 @@
 						<th style="width: 8%"></th>
 					</tr>
 					<%
-						Product[] items = catalogue.getProducts().toArray(new Product[0]);
-								for( Product anItem : items ){
+						Product[] items = catalogue.getAvailableProducts().toArray(new Product[0]);
+											for( Product anItem : items ){
 					%> 
 						<tr>
 							<td><%= anItem.getName() %></td>

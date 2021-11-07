@@ -14,7 +14,7 @@ public class Producer implements Serializable {
     protected String name;
     protected Set<Product> products;
 
-   
+    public Producer() {}
 
     public Producer(String name) { 
     	this.products = new HashSet<>();
@@ -41,8 +41,8 @@ public class Producer implements Serializable {
     }
 
     @OneToMany(
-            cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
-           // fetch=FetchType.LAZY,
+          //  cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
+            fetch=FetchType.LAZY,
             mappedBy = "producer"
     )
     public Set<Product> getProducts() {

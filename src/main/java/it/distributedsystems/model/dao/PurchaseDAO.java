@@ -1,10 +1,10 @@
 package it.distributedsystems.model.dao;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PurchaseDAO {
 
-    public int insertPurchase(Purchase purchase);
 
     //public int removePurchaseByNumber(int purchaseNumber);
 
@@ -19,4 +19,8 @@ public interface PurchaseDAO {
     public List<Purchase> findAllPurchasesByCustomer(Customer customer);
 
     public List<Purchase> findAllPurchasesByProduct(Product product);
+
+
+
+	int insertPurchase(Purchase purchase);
 }

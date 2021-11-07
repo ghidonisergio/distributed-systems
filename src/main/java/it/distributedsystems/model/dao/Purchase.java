@@ -17,7 +17,7 @@ public class Purchase implements Serializable {
     protected Customer customer;
     protected Set<Product> products;
 
-   
+    public Purchase() {  }
 
     public Purchase(int purchaseNumber) { this.purchaseNumber = purchaseNumber; }
 
@@ -50,7 +50,8 @@ public class Purchase implements Serializable {
     }
 
     @ManyToOne(
-            cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
+          //  cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
+    		 cascade = {CascadeType.PERSIST},
             fetch = FetchType.LAZY
     )
     public Customer getCustomer() { return customer; }
@@ -58,7 +59,7 @@ public class Purchase implements Serializable {
     public void setCustomer(Customer customer) { this.customer = customer; }
 
     @OneToMany(
-            cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
+           // cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch=FetchType.LAZY,
             mappedBy = "purchase"
     )

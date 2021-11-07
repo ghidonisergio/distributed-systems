@@ -1,8 +1,11 @@
 package it.distributedsystems.sessionbeans;
 
+import java.util.List;
 import java.util.Set;
 
+import it.distributedsystems.model.dao.Customer;
 import it.distributedsystems.model.dao.Product;
+import it.distributedsystems.model.dao.Purchase;
 
 public interface Cart {
 
@@ -22,9 +25,15 @@ public interface Cart {
 	
 	 boolean isPurchasePresent();
 	 
-
+	 List<Purchase> findAllPurchasesByCustomerName(String name);
+	 
 	 boolean isEmpty();
 	 
-	void confirmPurchase(String customerName) throws Exception;
+	boolean confirmPurchase(String customerName) throws Exception;
+	public Customer getCustomer() ;
+	
+	void removeItem(int prodNum);
+		
+	
 
 }

@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 @Local
@@ -53,23 +54,32 @@ public class EJB3CustomerDAO implements CustomerDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Customer findCustomerByName(String name) throws EntityNotFoundException{
         if(name != null && !name.equals("")) {
-            return (Customer) em.createQuery("FROM Customer c where c.name = :customerName").
-                    setParameter("customerName", name).getSingleResult();
+        	
+             List<Customer> results = em.createQuery("FROM Customer c where c.name = :customerName").
+                    setParameter("customerName", name).getResultList();
+            
+            if(!results.isEmpty()) {
+        		return results.get(0);
+        		} else {
+        			return null;
+        		}
+            
+            
         } else
             return null;
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Customer findCustomerById(int id) {
         return em.find(Customer.class, id);
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Customer> getAllCustomers() {
         return em.createQuery("FROM Customer").getResultList();
     }

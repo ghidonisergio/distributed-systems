@@ -2,6 +2,7 @@ package it.distributedsystems.model.dao;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,7 +16,10 @@ public class Customer implements Serializable {
 
     public Customer() {}
 
-    public Customer(String name) { this.name = name; }
+    public Customer(String name) { 
+    	this.purchases = new HashSet<>();
+    	this.name = name; 
+    	}
 
     public Customer(String name, Set<Purchase> purchases) {
         this.name = name;
@@ -37,8 +41,8 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    @OneToMany(
-            cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
+   @OneToMany(
+           // cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
             fetch = FetchType.LAZY,
             mappedBy = "customer"
     )

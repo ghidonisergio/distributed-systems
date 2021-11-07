@@ -26,6 +26,23 @@
         <servlet-name>StillAServlet</servlet-name>
         <url-pattern>/stillaServlet</url-pattern>
     </servlet-mapping>
+    
+     <servlet>
+    <servlet-name>initServlet</servlet-name>
+    <servlet-class>it.distributedsystems.web.InitServlet</servlet-class>
+
+    <init-param>
+      <param-name>servletContextKey</param-name>
+      <param-value>servletC</param-value>
+    </init-param>
+
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>initServlet</servlet-name>
+    <url-pattern>/init</url-pattern>
+  </servlet-mapping>
 
 	<!-- Welcome pages -->
 	<!-- pleonastico: tomcat "tenta" in automatico le index.html e index.jsp -->

@@ -4,11 +4,12 @@ import java.util.List;
 
 import it.distributedsystems.model.dao.Producer;
 import it.distributedsystems.model.dao.Product;
+import it.distributedsystems.model.dao.Purchase;
 import it.distributedsystems.notused.Item;
 
 public interface Catalogue {
 
-	List<Product> getProducts();
+	List<Product> getAvailableProducts();
 
 	void empty();
 	
@@ -23,5 +24,7 @@ public interface Catalogue {
 	Product getByProductNumber(int productNumber);
 	
 	void addProducer(String producerName);
+
+	void flush();
 
 }

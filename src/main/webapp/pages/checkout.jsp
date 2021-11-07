@@ -24,59 +24,50 @@
 
 
 	<%
-		Cart cart = SessionBeanFactory.getCart();
-	DAOFactory daoFactory = DAOFactory.getDAOFactory( application.getInitParameter("dao") );
-	CustomerDAO customerDAO = daoFactory.getCustomerDAO();
-	PurchaseDAO purchaseDAO = daoFactory.getPurchaseDAO();
+	//WATCH OUT!!! ogni JNDI lookup genera un nuovo riferimento allo stateful
+			//sb e quindi un nuovo stato. Ricorda che il container ti garantisce lo stesso
+			// a patto che tu usi lo stesso rif.(locale o remoto). PERO' il rif. te lo devi gestire tu.
+			Cart cart = (Cart) session.getAttribute("cart");
+			if(cart == null) {
+				cart = SessionBeanFactory.getCart();
+				session.setAttribute("cart",cart);
+			}
+			
 		
 	
 		if(request.getParameter("ok") != null && !cart.isEmpty()){
-			cart.confirmPurchase( request.getParameter("email"));
-			cart.empty();
-	%>
+			
+			boolean status = cart.confirmPurchase( request.getParameter("email"));
+			
+			
+			if(status) {
+				cart.empty();
+			
+			%>	
+			
 		<div id="main" class="clear">
 		<p>Congratulations !!!!  Successful purchase</p>
 		<form>
 			<input type="submit" name="return" value="return">
 			</form>
 	</div>
-		<%
-			} else if(request.getParameter("order") != null){
-			
-		%>
-			
-			<div id="main" class="clear">
-		<p>order detail</p>
-		<ul>
-		<%
-			for(Product item : cart.getProducts()){
-		%>
-				<li>Name: <%=item.getName()%> &nbsp; 
-				Product Number: <%=item.getProductNumber()%>
-				&nbsp; unitary price <%=item.getPrice()%>
-				&nbsp; Producer Name: <%=item.getProducer().getName()%>
-				</li>
-		<%
-			}
-		%>
-		</ul>
-			<form>
-			<input type="submit" name="return" value="return">
-			</form>
-			
-			</div>
-			
 	
-	
-	<%
-		} else if(request.getParameter("headerorders") != null){
+	<% } else { %>
+	<div id="main" class="clear">
+			<p> Meanwhile the item in the catalogue has been removed</p>
+				<form>
+					<input type="submit" name="return" value="return">
+					</form>
+					</div>
+	<% }
+		} else if(request.getParameter("purchases") != null){
 		String mail = request.getParameter("email");
-		Customer customer = customerDAO.findCustomerByName(mail);
-	List<Purchase> purchases=	purchaseDAO.findAllPurchasesByCustomer(customer);
+		
+	List<Purchase> purchases=	cart.findAllPurchasesByCustomerName(mail);
 						%>
 			
 			<div id="main" class="clear">
-		<p>orderheader details</p>
+		<p>Purchases details</p>
 		<ul>
 		<%
 			for(Purchase pur : purchases){
@@ -123,12 +114,12 @@
 			
 		
 		<p>Shipment information ( * = mandatory): </p>
-		<span>Email (*) <input type="text" name="email">&nbsp;&nbsp;
-		codordine <input type="text" name="codordine"></span><br><br>
+		<span>Email (*) <input required type="text" name="email">&nbsp;&nbsp;
+		</span><br><br>
 		<input type="submit" name="ok" value="final submit">
-		<input type="submit" name="order" value="show order">
-		<input type="submit" name="headerorders" value="headers">
-		<input type="submit" name="all" value="show all orders">
+		
+		<input type="submit" name="purchases" value="purchases on email">
+	
 		</form>
 	</div>
 <%} %>

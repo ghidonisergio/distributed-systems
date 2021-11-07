@@ -56,7 +56,7 @@ public class EJB3ProducerDAO implements ProducerDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Producer findProducerByName(String name) {
         if(name != null && !name.equals("")) {
             return (Producer) em.createQuery("FROM Producer p where p.name = :producerName").
@@ -66,7 +66,7 @@ public class EJB3ProducerDAO implements ProducerDAO {
     }
 
     @Override
-   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+   @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Producer findProducerById(int id) {
     	Producer producer = em.find(Producer.class, id);
     
@@ -74,7 +74,7 @@ public class EJB3ProducerDAO implements ProducerDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Producer> getAllProducers() {
         return em.createQuery("FROM Producer").getResultList();
     }

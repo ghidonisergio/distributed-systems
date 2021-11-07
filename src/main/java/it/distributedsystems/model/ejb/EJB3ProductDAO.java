@@ -41,9 +41,12 @@ public class EJB3ProductDAO implements ProductDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int removeProductByNumber(int productNumber) {
 
-        Product product = (Product) em.createQuery("from Product p where p.productNumber = :num").
-                setParameter("num", productNumber).getSingleResult();
-        if (product!=null){
+    	
+        List<Product> products =  em.createQuery("from Product p where p.productNumber = :num").
+                setParameter("num", productNumber).getResultList();
+    	
+        if (!products.isEmpty()){
+        	Product product = products.get(0);
             int id = product.getId();
             //Cancello le associazioni tra il prodotto da rimuovere e gli ordini in cui è contenuto
             //dalla tabella di associazione Purchase_Product
@@ -75,20 +78,20 @@ public class EJB3ProductDAO implements ProductDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Product findProductByNumber(int productNumber) {
         return (Product) em.createQuery("from Product p where p.productNumber = :num").
                 setParameter("num", productNumber).getSingleResult();
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Product findProductById(int id) {
         return em.find(Product.class, id);
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Product> getAllProducts() {
     	List<Product> l= em.createQuery("from Product").getResultList();
     	if(!l.isEmpty()) {
@@ -99,7 +102,7 @@ public class EJB3ProductDAO implements ProductDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Product> getAllProductsByProducer(Producer producer) {
         //Non è stato necessario usare una fetch join (nonostante Product.producer fosse mappato LAZY)
         //perché gli id delle entità LAZY collegate vengono comunque mantenuti e sono accessibili
@@ -108,11 +111,17 @@ public class EJB3ProductDAO implements ProductDAO {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Product> getAllProductsByPurchase(Purchase purchase) {
         // riattacco il product al contesto di persistenza con una merge
         return em.createQuery("FROM Product p WHERE :purchaseId = p.purchase_id").
                 setParameter("purchaseId", purchase.getId()).getResultList();
     }
+
+	@Override
+	public List<Product> getAvailableProducts() {
+	
+    	return em.createQuery("from Product where purchase_id is null").getResultList();
+	}
 }
 

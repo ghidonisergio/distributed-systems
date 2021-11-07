@@ -29,7 +29,15 @@
 
 		
 		<%
-		Cart cart = SessionBeanFactory.getCart();
+		//WATCH OUT!!! ogni JNDI lookup genera un nuovo riferimento allo stateful
+		//sb e quindi un nuovo stato. Ricorda che il container ti garantisce lo stesso
+		// a patto che tu usi lo stesso rif.(locale o remoto). PERO' il rif. te lo devi gestire tu.
+		Cart cart = (Cart) session.getAttribute("cart");
+		if(cart == null) {
+			cart = SessionBeanFactory.getCart();
+			session.setAttribute("cart",cart);
+		}
+		
 		Catalogue catalogue = SessionBeanFactory.getCatalogue();
 		if (application.getAttribute("purchaseNumber") == null) {
 			application.setAttribute("purchaseNumber", new Integer(0));
@@ -78,8 +86,7 @@
 					</tr>
 
 					<%
-						
-									for (Product product : catalogue.getProducts()) {
+						for (Product product : catalogue.getAvailableProducts()) {
 					%>
 
 					<tr>
@@ -129,10 +136,31 @@
 
 				<%
 					total = 0;
-							Set<Product> cartItems = cart.getProducts();
-							List<Product> catalogueItems = catalogue.getProducts();
-							boolean changed = cartItems.retainAll(catalogueItems);
-							for (Product item2 : cartItems) {
+									Set<Product> cartItems = cart.getProducts();
+									Set<Product> tempSet = new HashSet<>();
+									Set<Product> catalogueItems = new HashSet<>(catalogue.getAvailableProducts());
+									boolean changed = false;
+									boolean tempchanged = false;
+									for(Product pmy : cartItems) {
+										tempchanged = true;
+										for(Product pcat : catalogueItems) {
+											if(pmy.getProductNumber() == pcat.getProductNumber()) {
+												tempSet.add(pmy);
+												tempchanged = false;
+												break;
+											}
+										}
+										
+										if(tempchanged == true) {
+											cart.removeItem(pmy.getProductNumber());
+											changed = true;
+											}
+										
+										
+									}
+									
+									cartItems = tempSet;
+									for (Product item2 : cartItems) {
 				%>
 
 				<tr>

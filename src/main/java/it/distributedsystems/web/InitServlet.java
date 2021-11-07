@@ -1,6 +1,7 @@
 package it.distributedsystems.web;
 
 import it.distributedsystems.model.ejb.HelloBean;
+import it.distributedsystems.sessionbeans.SessionBeanFactory;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -42,6 +43,7 @@ public class InitServlet extends HttpServlet {
 		super.init(config);
 		System.out.println("EXECUTING CREATE TABLE");
 		
+		SessionBeanFactory.getCatalogue().addProducer("n. d.");
 		/*
 		 * 
 		 * WATCH OUT!!! l'istanza em che passi NON è la stessa che recuperi dopo
@@ -50,7 +52,7 @@ public class InitServlet extends HttpServlet {
 		this.getServletContext().setAttribute("em", em);
 		
 		*/
-		this.getServletContext().setAttribute("utx", utx);
+		/*this.getServletContext().setAttribute("utx", utx);
 		try {
 		utx.begin();
 		em.createNativeQuery("create table IF NOT EXISTS atable (mycol int);").executeUpdate();
@@ -70,7 +72,7 @@ public class InitServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 		} 
-		System.out.println("  TABLE created");
+		System.out.println("  TABLE created");*/
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
